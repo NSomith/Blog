@@ -66,6 +66,25 @@ router.get("/:uname", middleware.checkToken,(req, res) => {
     })
 });
 
+// while singup check for username is unique 
+router.get("/checkusername/:uname",(req,res)=>{
+    let serachname = req.params.uname;
+    User.findOne({ username: serachname}, (err, result) => {
+        if (err) res.status(400).send(err);
+        if(result!=null){
+           return res.json({
+                status: true,
+                username: serachname
+            });
+        }else{
+            return res.json({
+                status:false,
+                username: serachname
+            });
+        }
+    })
+});
+
 router.post("/login", async (req, res) => {
     let loginuser = req.body.username;
     await User.findOne({ username: loginuser }, (err, result) => {
