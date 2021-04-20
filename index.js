@@ -19,7 +19,7 @@ app.use("/user",userRoute,(req,res)=>{
 });
 
 app.get("/",(req,res)=>{
-    res.json({
+    res.send({
         msg: "Welcome",
         info: "",
     });
