@@ -21,7 +21,7 @@ app.use("/user",userRoute,(req,res)=>{
 app.get("/",(req,res)=>{
     res.send({
         msg: "Welcome",
-        info: "",
+        info: null,
     });
 });
 
