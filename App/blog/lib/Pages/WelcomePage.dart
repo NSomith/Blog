@@ -42,9 +42,10 @@ class _WelcomePageState extends State<WelcomePage>
 
   @override
   void dispose() {
-    super.dispose();
     _animationController.dispose();
     _animationController2.dispose();
+    super.dispose();
+    
   }
 
   @override

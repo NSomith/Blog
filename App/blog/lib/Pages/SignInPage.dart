@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:blog/Network/networkHandler.dart';
+import 'package:blog/Pages/HomePage.dart';
 import 'package:blog/Pages/SignUpPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
@@ -18,6 +20,7 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController uname = TextEditingController();
   TextEditingController uemail = TextEditingController();
   TextEditingController upassword = TextEditingController();
+  final storage = FlutterSecureStorage();
 
   String errText;
   bool validate = false;
@@ -69,7 +72,12 @@ class _SignInPageState extends State<SignInPage> {
                       validate = true;
                       circular = false;
                     });
-                    print(output);
+                    print(output['token']);
+                    await storage.write(key: "token", value: output['token']);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                        (route) => false);
                   } else {
                     setState(() {
                       circular = false;

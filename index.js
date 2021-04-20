@@ -12,11 +12,14 @@ mongoose.connect("mongodb+srv://Somith:Somith16@@cluster1.3e5n9.mongodb.net/flut
 
 // middleware
 const userRoute = require('./user');
+const profileRoute = require('./profile');
 console.log(`the value of ${userRoute}`);
 app.use("/user",userRoute,(req,res)=>{
     console.log("hi ji");
     res.send("hellow form router");
 });
+
+app.use("/profile",profileRoute)
 
 app.get("/",(req,res)=>{
     res.json({
