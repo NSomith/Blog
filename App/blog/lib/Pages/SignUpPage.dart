@@ -1,3 +1,4 @@
+import 'package:blog/Network/networkHandler.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPAge extends StatefulWidget {
@@ -10,6 +11,7 @@ class SignUpPAge extends StatefulWidget {
 class _SignUpPAgeState extends State<SignUpPAge> {
   bool vis = true;
   final globalKey = GlobalKey<FormState>();
+  NetworkHandler networkHandler = NetworkHandler();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                 onTap: () {
                   if(globalKey.currentState.validate()){
                     // sen the data to rest server
-                    print("valid");
+                    networkHandler.get("");
                   }
                 },
                 child: Container(
