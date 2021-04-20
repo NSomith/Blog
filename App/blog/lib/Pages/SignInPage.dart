@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:blog/Network/networkHandler.dart';
+import 'package:blog/Pages/SignUpPage.dart';
 import 'package:flutter/material.dart';
 
-class SignUpPAge extends StatefulWidget {
-  SignUpPAge({Key key}) : super(key: key);
+class SignInPage extends StatefulWidget {
+  SignInPage({Key key}) : super(key: key);
 
   @override
-  _SignUpPAgeState createState() => _SignUpPAgeState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignUpPAgeState extends State<SignUpPAge> {
+class _SignInPageState extends State<SignInPage> {
   bool vis = true;
   final globalKey = GlobalKey<FormState>();
   NetworkHandler networkHandler = NetworkHandler();
@@ -38,34 +41,40 @@ class _SignUpPAgeState extends State<SignUpPAge> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Sing with email"),
+              Text("Sign in with email"),
               SizedBox(
                 height: 20,
               ),
               usernameText(),
-              emailText(),
               passwordText(),
               SizedBox(
                 height: 10,
               ),
               InkWell(
                 onTap: () async {
-                  await checkUser();
-                  if (globalKey.currentState.validate() && validate) {
-                    // sen the data to rest server
-                    Map<String, dynamic> data = {
-                      "username": uname.text,
-                      "email": uemail.text,
-                      "password": upassword.text
-                    };
-                    // networkHandler.get("");
-                    await networkHandler.post("/user/register", data);
+                  setState(() {
+                    circular = true;
+                  });
+                  Map<String, dynamic> data = {
+                    "username": uname.text,
+                    "password": upassword.text
+                  };
+                  // we will get a token from the backend
+
+                  var response = await networkHandler.post("/user/login", data);
+                  Map<String, dynamic> output = json.decode(response.body);
+                  if (response.statusCode == 200 ||
+                      response.statusCode == 201) {
                     setState(() {
+                      validate = true;
                       circular = false;
                     });
+                    print(output);
                   } else {
                     setState(() {
                       circular = false;
+                      validate = false;
+                      errText = "Username or password is incorrect";
                     });
                   }
                 },
@@ -77,8 +86,28 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(12)),
-                        child: Center(child: Text("Sign up")),
+                        child: Center(child: Text("Sign In")),
                       ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Forgot password? "),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPAge()));
+                      },
+                      child: Text("New User"))
+                ],
               )
             ],
           ),
@@ -129,7 +158,7 @@ class _SignUpPAgeState extends State<SignUpPAge> {
             //   return null;
             // },
             decoration: InputDecoration(
-              errorText: validate?null:errText,
+              errorText: validate ? null : errText,
             ),
           )
         ],
@@ -170,18 +199,19 @@ class _SignUpPAgeState extends State<SignUpPAge> {
           Text("password"),
           TextFormField(
             controller: upassword,
-            validator: (value) {
-              if (value.isEmpty) {
-                return "Passord cannot be empty";
-              }
-              if (value.length <= 2) {
-                return "Lengtrh";
-              }
-              // check for unique uname
-              return null;
-            },
+            // validator: (value) {
+            //   if (value.isEmpty) {
+            //     return "Passord cannot be empty";
+            //   }
+            //   if (value.length <= 2) {
+            //     return "Lengtrh";
+            //   }
+            //   // check for unique uname
+            //   return null;
+            // },
             obscureText: vis,
             decoration: InputDecoration(
+                errorText: validate ? null : errText,
                 suffixIcon: IconButton(
                     icon: Icon(vis ? Icons.visibility_off : Icons.visibility),
                     onPressed: () {

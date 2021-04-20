@@ -1,5 +1,7 @@
+import 'package:blog/Pages/SignInPage.dart';
 import 'package:blog/Pages/SignUpPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class _WelcomePageState extends State<WelcomePage>
   Animation<Offset> animation; //offset is the x y of the screen
   AnimationController _animationController2;
   Animation<Offset> animation2;
+  bool isLogin = false;
+  final facebookLogin = FacebookLogin();
 
   @override
   void initState() {
@@ -111,11 +115,17 @@ class _WelcomePageState extends State<WelcomePage>
                       fontSize: 17,
                     ),
                   ),
-                  Text(
-                    "Sign In",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 17,
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SignInPage()));
+                    },
+                    child: Text(
+                      "Sign In",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 17,
+                      ),
                     ),
                   ),
                 ]),
@@ -127,6 +137,7 @@ class _WelcomePageState extends State<WelcomePage>
     );
   }
 
+  onFbLogin() async {}
   onEmailClick() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => SignUpPAge()));
