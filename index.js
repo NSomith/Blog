@@ -21,7 +21,7 @@ app.use("/user",userRoute,(req,res)=>{
 app.get("/",(req,res)=>{
     res.json({
         msg: "Welcome",
-        info: "This is a root endpoint",
+        info: "",
     });
 });
 
