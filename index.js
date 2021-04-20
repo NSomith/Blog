@@ -19,8 +19,8 @@ app.use("/user",userRoute,(req,res)=>{
 });
 
 app.get("/",(req,res)=>{
-    res.send({
-        msg: "Welcome on DevStack Blog App development YouTube video series",
+    res.json({
+        msg: "Welcome",
         info: "This is a root endpoint",
     });
 });
