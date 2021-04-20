@@ -19,7 +19,10 @@ app.use("/user",userRoute,(req,res)=>{
 });
 
 app.get("/",(req,res)=>{
-    res.send("gefd");
+    res.send({
+        msg: "Welcome on DevStack Blog App development YouTube video series",
+        info: "This is a root endpoint",
+    });
 });
 
 app.listen(port,()=>{console.log("listenting");});
