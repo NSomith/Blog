@@ -1,15 +1,19 @@
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 class NetworkHandler {
-  String baseurl = "https://frozen-brook-01777.herokuapp.com";
+  // String baseurl = "https://frozen-brook-01777.herokuapp.com";
+  String baseurl = "http://192.168.1.8:8000";
   var log = Logger();
-
+  FlutterSecureStorage storage = FlutterSecureStorage();
   Future<dynamic> get(String url) async {
     url = formatter(url);
-    var response = await http.get(Uri.parse(url));
+    String token = await storage.read(key: "token");
+    var response = await http
+        .get(Uri.parse(url), headers: {"Authorization": "Bearer ${token}"});
     if (response.statusCode == 200 || response.statusCode == 201) {
       log.i(response.body);
       return json.decode(response.body);
@@ -19,8 +23,12 @@ class NetworkHandler {
 
   Future<http.Response> post(String url, Map<String, dynamic> mp) async {
     url = formatter(url);
+    String token = await storage.read(key: "token");
     var response = await http.post(Uri.parse(url),
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${token}"
+        },
         body: json.encode(mp)); //encode converts to json string
     // if (response.statusCode == 200 || response.statusCode == 201) {
     //   log.i(response.body);
@@ -28,8 +36,8 @@ class NetworkHandler {
     // }
     // // incase of err
     // log.i(response.body);
-    
-    return response; 
+
+    return response;
   }
 
   String formatter(url) => baseurl + url;

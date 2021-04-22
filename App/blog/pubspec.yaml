@@ -32,6 +32,8 @@ dependencies:
   logger: ^1.0.0
   flutter_facebook_login: ^3.0.0
   flutter_secure_storage: ^4.1.0
+  image_picker: ^0.7.4
+
 
 
 

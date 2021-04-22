@@ -1,3 +1,4 @@
+import 'package:blog/Network/networkHandler.dart';
 import 'package:blog/Profile/CreateProfile.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +10,36 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final networkHandler = NetworkHandler();
+  Widget page = CircularProgressIndicator();
+  @override
+  void initState() {
+    super.initState();
+    checkProfile();
+  }
+
+  void checkProfile()async{
+     var response = await networkHandler.get("/profile/checkProfile");
+    if(response['status']){
+      setState(() {
+        page = showProfile();
+      });
+    }else{
+      setState(() {
+        page = button();
+      });
+    }
+  }
+
+  Widget showProfile(){
+    return Text("data");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Center(child: button()),
+        child: page,
       ),
     );
   }
