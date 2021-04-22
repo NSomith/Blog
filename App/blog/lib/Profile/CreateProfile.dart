@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:blog/Network/networkHandler.dart';
+import 'package:blog/Screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,6 +21,7 @@ class _CreateProfileState extends State<CreateProfile> {
   PickedFile _imageFile;
   final _picker = ImagePicker();
   final networkHandler = NetworkHandler();
+  bool cirular = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,15 +55,41 @@ class _CreateProfileState extends State<CreateProfile> {
               height: 20,
             ),
             InkWell(
-              onTap: () {
-                if(global_key.currentState.validate()){
-                  Map<String,dynamic> data = {
-                    "name":_name.text,
-                    "profession":_profession.text,
-                    "dob":_dob.text,
-                    "title":_title.text,
-                    "about":_about.text
+              onTap: () async {
+                setState(() {
+                  cirular = true;
+                });
+                if (global_key.currentState.validate()) {
+                  Map<String, dynamic> data = {
+                    "name": _name.text,
+                    "profession": _profession.text,
+                    "dob": _dob.text,
+                    "title": _title.text,
+                    "about": _about.text
                   };
+                  var response =
+                      await networkHandler.post("/profile/add", data);
+                  if (response.statusCode == 200 ||
+                      response.statusCode == 201) {
+                    if (_imageFile != null) {
+                      var imgResponse = await networkHandler.patchImage(
+                          "/profile/add/image", _imageFile.path);
+                      if(imgResponse.statusCode == 200){
+                        setState(() {
+                          cirular = false;
+                        });
+                      }
+                    } else {
+                      setState(() {
+                        cirular = false;
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
+                            (route) => false);
+                      });
+                    }
+                  }
                 }
               },
               child: Center(
@@ -73,16 +101,16 @@ class _CreateProfileState extends State<CreateProfile> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        // child: circular
-                        //     ? CircularProgressIndicator()
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: cirular
+                            ? CircularProgressIndicator()
+                            : Text(
+                                "Submit",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ))),
             )
           ],
