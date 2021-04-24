@@ -1,4 +1,5 @@
 import 'package:blog/Network/networkHandler.dart';
+import 'package:blog/customWidget/overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -33,7 +34,16 @@ class _AddBlogState extends State<AddBlog> {
               }),
           actions: [
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                if (_imageFile.path != null && _globalkey.currentState.validate()) {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) => OverlayScreen(
+                            imagefile: _imageFile,
+                            title: _title.toString(),
+                          ));
+                }
+              },
               child: Text(
                 "Preview",
                 style: TextStyle(fontSize: 18, color: Colors.blue),

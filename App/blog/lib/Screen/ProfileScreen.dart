@@ -22,10 +22,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void checkProfile()async{
      var response = await networkHandler.get("/profile/checkProfile");
     if(response['status']){
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>MainProfile()));
-      // setState(() {
-      //   page = showProfile();
-      // });
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainProfile()));
+      setState(() {
+        page = MainProfile();
+      });
     }else{
       setState(() {
         page = button();
@@ -33,14 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  // Widget showProfile(){
-  //   return 
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: Container(
+        
         child: page,
       ),
     );

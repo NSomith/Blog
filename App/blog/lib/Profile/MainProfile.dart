@@ -32,6 +32,7 @@ class _MainProfileState extends State<MainProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back),
