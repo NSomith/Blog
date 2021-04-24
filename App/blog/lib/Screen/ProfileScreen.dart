@@ -1,5 +1,6 @@
 import 'package:blog/Network/networkHandler.dart';
 import 'package:blog/Profile/CreateProfile.dart';
+import 'package:blog/Profile/MainProfile.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,9 +22,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void checkProfile()async{
      var response = await networkHandler.get("/profile/checkProfile");
     if(response['status']){
-      setState(() {
-        page = showProfile();
-      });
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>MainProfile()));
+      // setState(() {
+      //   page = showProfile();
+      // });
     }else{
       setState(() {
         page = button();
@@ -31,9 +33,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Widget showProfile(){
-    return Text("data");
-  }
+  // Widget showProfile(){
+  //   return 
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -74,7 +74,7 @@ class _CreateProfileState extends State<CreateProfile> {
                     if (_imageFile != null) {
                       var imgResponse = await networkHandler.patchImage(
                           "/profile/add/image", _imageFile.path);
-                      if(imgResponse.statusCode == 200){
+                      if (imgResponse.statusCode == 200) {
                         setState(() {
                           cirular = false;
                         });

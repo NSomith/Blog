@@ -1,5 +1,6 @@
 import 'package:blog/Screen/HomeScreen.dart';
 import 'package:blog/Screen/ProfileScreen.dart';
+import 'package:blog/blogpost/addBlog.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currState = 0;
   List<Widget> widlist = [HomeScreen(), ProfileScreen()];
-  List<String>titlesc = ["Home Page","Profile Page"];
+  List<String> titlesc = ["Home Page", "Profile Page"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +51,10 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: null,
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => AddBlog()));
+          },
           child: Icon(Icons.add),
         ),
         bottomNavigationBar: BottomAppBar(
