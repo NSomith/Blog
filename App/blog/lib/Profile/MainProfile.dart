@@ -1,5 +1,6 @@
 import 'package:blog/Models/profileModel.dart';
 import 'package:blog/Network/networkHandler.dart';
+import 'package:blog/blogpost/blogs.dart';
 import 'package:flutter/material.dart';
 
 class MainProfile extends StatefulWidget {
@@ -58,7 +59,9 @@ class _MainProfileState extends State<MainProfile> {
                 otherDetails("about", profileModel.about),
                 otherDetails("name", profileModel.name),
                 otherDetails("Profession",profileModel.profession),
-                otherDetails("Dob",profileModel.DOB)
+                otherDetails("Dob",profileModel.DOB),
+                SizedBox(height: 10,),
+                Blog(url: "/blogpost/getOwnBlog",)
               ],
             ),
     );

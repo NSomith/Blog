@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:blog/Models/addBlogModel.dart';
 import 'package:blog/Network/networkHandler.dart';
+import 'package:blog/Pages/HomePage.dart';
 import 'package:blog/customWidget/overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,7 +39,8 @@ class _AddBlogState extends State<AddBlog> {
           actions: [
             FlatButton(
               onPressed: () {
-                if (_imageFile.path != null && _globalkey.currentState.validate()) {
+                if (_imageFile.path != null &&
+                    _globalkey.currentState.validate()) {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) => OverlayScreen(
@@ -61,7 +66,24 @@ class _AddBlogState extends State<AddBlog> {
 
   Widget addButton() {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        AddBlogModel addblog =
+            AddBlogModel(body: _body.text, title: _title.text);
+        if (_imageFile != null && _globalkey.currentState.validate()) {
+          var response =
+              await networkHandler.post("/blogpost/add", addblog.toJson());
+          print(response.body);
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            String id = json.decode(response.body)['data'];
+            var imagesrc = networkHandler.patchImage(
+                "/blogpost/add/coverimage/${id}", _imageFile.path);
+            print(imagesrc);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (route) => false);
+          }
+        }
+      },
       child: Container(
           height: 50,
           width: 200,
