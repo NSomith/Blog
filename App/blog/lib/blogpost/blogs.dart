@@ -1,6 +1,7 @@
 import 'package:blog/Models/ListModel.dart';
 import 'package:blog/Models/addBlogModel.dart';
 import 'package:blog/Network/networkHandler.dart';
+import 'package:blog/blogpost/blogDetail.dart';
 import 'package:blog/customWidget/blogCardData.dart';
 import 'package:flutter/material.dart';
 
@@ -33,12 +34,25 @@ class _BlogState extends State<Blog> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: data
-            .map((item) => BlogCard(
-                  addBlogModel: item,
-                  networkHandler: networkHandler,
-                ))
-            .toList());
+    return data.isEmpty
+        ? Center(
+            child: Text("No data present"),
+          )
+        : Column(
+            children: data
+                .map((item) => InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BlogDetails(
+                              addBlogModel: item,
+                              networkHandler: networkHandler,
+                            )));
+                      },
+                      child: BlogCard(
+                        addBlogModel: item,
+                        networkHandler: networkHandler,
+                      ),
+                    ))
+                .toList());
   }
 }

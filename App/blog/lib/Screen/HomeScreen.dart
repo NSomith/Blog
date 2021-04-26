@@ -1,3 +1,4 @@
+import 'package:blog/blogpost/blogs.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,7 +12,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: Container(child: Text("data"),),
+      body: SingleChildScrollView(
+          child: Blog(
+        url: "/blogpost/getOtherBlog",
+      )),
     );
   }
 }

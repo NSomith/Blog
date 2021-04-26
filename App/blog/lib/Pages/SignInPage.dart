@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:blog/Network/networkHandler.dart';
 import 'package:blog/Pages/HomePage.dart';
 import 'package:blog/Pages/SignUpPage.dart';
+import 'package:blog/Pages/forgotPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -103,7 +104,12 @@ class _SignInPageState extends State<SignInPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Forgot password? "),
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage()));
+                      },
+                      child: Text("Forgot password? ")),
                   SizedBox(
                     width: 2,
                   ),

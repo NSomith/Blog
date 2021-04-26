@@ -41,23 +41,35 @@ class NetworkHandler {
     return response;
   }
 
-  Future<http.StreamedResponse> patchImage(String url, String filepath) async{
+  Future<http.Response> patch(String url, Map<String, dynamic> mp) async {
     url = formatter(url);
     String token = await storage.read(key: "token");
-    var request = http.MultipartRequest('PATCH',Uri.parse(url));
+    var response = await http.patch(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${token}"
+        },
+        body: json.encode(mp)); //encode converts to json string
+
+    return response;
+  }
+
+  Future<http.StreamedResponse> patchImage(String url, String filepath) async {
+    url = formatter(url);
+    String token = await storage.read(key: "token");
+    var request = http.MultipartRequest('PATCH', Uri.parse(url));
     request.files.add(await http.MultipartFile.fromPath("img", filepath));
     request.headers.addAll({
       "Content-Type": "multipart/from-data",
-          "Authorization": "Bearer ${token}"
+      "Authorization": "Bearer ${token}"
     });
     var response = request.send();
     return response;
   }
 
-  NetworkImage getImage(String username){
+  NetworkImage getImage(String username) {
     String url = formatter("/uploads//$username.jpg");
     return NetworkImage(url);
-
   }
 
   String formatter(url) => baseurl + url;

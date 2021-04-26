@@ -15,6 +15,7 @@ class BlogCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 200,
+      padding: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [
